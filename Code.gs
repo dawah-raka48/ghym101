@@ -46,7 +46,7 @@ function doPost(e){
     const body=JSON.parse(e&&e.postData&&e.postData.contents||'{}');
     const action=String(body.action||'');
     if(action==='login')return json_(login_(body));
-    if(action==='publicDisplay')return json_({ok:true,data:aggregate_()});
+    if(action==='publicDisplay'){if(!body.displayKey||body.displayKey!==getSetting_('DISPLAY_KEY'))throw new Error('رابط شاشة العرض غير صحيح.');return json_({ok:true,data:aggregate_()});}
     if(action==='logout'){const u=auth_(body.token);if(u)deleteSession_(body.token);return json_({ok:true,data:{}})}
     const user=auth_(body.token);if(!user)throw new Error('انتهت الجلسة أو بيانات الدخول غير صحيحة. سجّل الدخول مرة أخرى.');
     if(action==='me')return json_({ok:true,data:{user:{id:user.id,name:user.name,username:user.username,role:user.role}}});
