@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102b25"><title>إيرادات مركز غيم</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar"><a class="brand" href="./"><span class="brand-mark">غ</span><span><b>مركز غيم</b><small>نظام الإيرادات</small></span></a><div class="top-actions"><span id="today"></span><button id="logoutBtn" class="btn ghost hidden">تسجيل الخروج</button></div></header>
+  <main>
+    <section id="setupNotice" class="notice hidden"><b>يلزم ربط قاعدة البيانات</b><p>ارفع ملف Code.gs إلى Google Apps Script، وانشره كتطبيق ويب، ثم ضع رابط النشر في app.js. راجع README.md.</p></section>
+    <section id="loginView" class="login-layout">
+      <div class="welcome"><span class="eyebrow">GHAYM CENTER</span><h1>إدارة الإيرادات<br>بكل سهولة.</h1><p>منصة موحدة لتسجيل الإيرادات اليومية، متابعة التقارير، وعرض ملخص الإيرادات.</p><div class="welcome-tags"><span>آمن</span><span>سهل الاستخدام</span><span>متوافق مع الجوال</span></div></div>
+      <form id="loginForm" class="panel login-card"><div class="panel-icon">↗</div><h2>تسجيل الدخول</h2><p class="muted">أدخل بيانات حسابك للمتابعة</p><label for="username">اسم المستخدم</label><input id="username" autocomplete="username" required placeholder="اسم المستخدم"><label for="password">كلمة المرور</label><input id="password" type="password" autocomplete="current-password" required placeholder="كلمة المرور"><button class="btn primary full" type="submit">دخول إلى النظام <span>←</span></button><p id="loginError" class="error" role="alert"></p><p class="tiny muted">شاشة العرض لها رابط مستقل للعرض فقط.</p></form>
+    </section>
+    <section id="dashboardView" class="hidden">
+      <div class="page-heading"><div><span class="eyebrow">لوحة التحكم</span><h1 id="welcomeTitle">أهلًا بك</h1><p class="muted" id="welcomeSub">إدارة الإيرادات اليومية</p></div><span id="roleBadge" class="role-badge">موظف</span></div>
+      <div id="managerStats" class="stats-grid hidden"><article class="stat-card"><span>إجمالي الإيرادات</span><b id="statRevenue">0 ر.س</b><small>الإجمالي المسجل</small></article><article class="stat-card"><span>عدد الطلاب / الفواتير</span><b id="statInvoices">0</b><small>إجمالي التقارير</small></article><article class="stat-card"><span>تقارير اليوم</span><b id="statToday">0</b><small>التقارير المحفوظة اليوم</small></article></div>
+      <div id="managerActions" class="action-grid hidden">
+        <button class="action-card" data-view="entry"><span class="action-icon">＋</span><b>إدخال إيراد</b><small>تسجيل تحصيل اليوم</small></button>
+        <button class="action-card" data-view="reports"><span class="action-icon">▤</span><b>التقارير والإيرادات</b><small>عرض وإدارة السجلات</small></button>
+        <button class="action-card" data-view="employees"><span class="action-icon">♙</span><b>إدارة الموظفين</b><small>إضافة حسابات الموظفين</small></button>
+        <a class="action-card" href="display.html" target="_blank" rel="noopener"><span class="action-icon">▣</span><b>شاشة المركز</b><small>فتح رابط العرض</small></a>
+      </div>
+      <div id="employeeActions" class="action-grid hidden">
+        <button class="action-card" data-view="entry"><span class="action-icon">＋</span><b>إدخال إيراد</b><small>تسجيل تحصيل اليوم</small></button>
+        <button class="action-card" data-view="myreports"><span class="action-icon">▤</span><b>تقاريري</b><small>عرض وطباعة تقاريري</small></button>
+      </div>
+      <section id="contentPanel" class="panel content-panel hidden"><div class="section-heading"><div><span class="eyebrow">مركز غيم</span><h2 id="contentTitle">إدخال إيراد</h2></div><button id="backBtn" class="btn ghost">العودة</button></div><div id="contentBody"></div></section>
+      <section id="recentPanel" class="panel content-panel"><div class="section-heading"><div><h2>أحدث التقارير</h2><p class="muted">آخر الإيرادات المسجلة</p></div><button id="refreshBtn" class="btn ghost">تحديث ↻</button></div><div id="recentReports" class="table-wrap"><p class="muted">جارٍ تحميل البيانات…</p></div></section>
+    </section>
+  </main>
+  <footer><span>مركز غيم © <span id="year"></span></span><span>نظام الإيرادات</span></footer>
+</div>
+<script src="app.js"></script>
+</body></html>
