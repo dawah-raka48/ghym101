@@ -1,0 +1,22 @@
+{
+  "id": "./display.html?key=d44ba5a6-6706-4e25-8a0b-44ce42c12aa2ea57536a-2f85-4d85-a1e2-76c50faa1945",
+  "name": "شاشة مركز غيم",
+  "short_name": "مركز غيم",
+  "description": "لوحة عرض إيرادات مركز غيم اليومية",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./display.html?key=d44ba5a6-6706-4e25-8a0b-44ce42c12aa2ea57536a-2f85-4d85-a1e2-76c50faa1945",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#071f1a",
+  "theme_color": "#102b25",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
