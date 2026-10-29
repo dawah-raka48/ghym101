@@ -87,11 +87,36 @@ function saveReport_(u,b){
   const sh=sheet_(SHEETS.REPORTS),rows=sh.getDataRange().getValues(),h=rows[0],ix=Object.fromEntries(h.map((v,i)=>[v,i]));
   // One daily report per employee; manager can remove a mistaken report before re-entry.
   for(let i=1;i<rows.length;i++)if(rows[i][ix.date]===date&&rows[i][ix.employeeId]===u.id)throw new Error('لديك تقرير محفوظ لهذا اليوم. تواصل مع المدير لتصحيح التقرير الموجود.');
-  const id=Utilities.getUuid(),now=new Date().toISOString(),pdf=String(b.pdfUrl||'').trim();
-  if(pdf&&!/^https:\/\/drive\.google\.com\//i.test(pdf))throw new Error('يُقبل رابط ملف Google Drive فقط.');
+  const id=Utilities.getUuid(),now=new Date().toISOString();
+  if(!b.pdfBase64||!b.pdfFileName)throw new Error('إرفاق ملف PDF إلزامي قبل حفظ الإيراد.');
+  const pdf=savePdfToDrive_(b.pdfBase64,b.pdfFileName,b.pdfMimeType||'application/pdf',date,u);
   sh.appendRow([id,date,u.id,u.name,students,network,transfer,qara,cash,total,pdf,now,now]);
   audit_(u.id,'SAVE_REPORT',id,JSON.stringify({date,students,total}));
   return {id,total};
+}
+
+function savePdfToDrive_(base64,fileName,mimeType,date,user){
+  if(mimeType!=='application/pdf'&&!/\.pdf$/i.test(fileName))throw new Error('يُقبل ملف PDF فقط.');
+  const bytes=Utilities.base64Decode(String(base64));
+  if(bytes.length<1)throw new Error('ملف PDF فارغ أو غير صالح.');
+  if(bytes.length>8*1024*1024)throw new Error('حجم ملف PDF يجب ألا يتجاوز 8 ميجابايت.');
+  const signature=Utilities.newBlob(bytes).getDataAsString().slice(0,5);
+  if(signature!=='%PDF-')throw new Error('الملف المرفق ليس ملف PDF صالحًا.');
+  const folderId=getSetting_('PDF_FOLDER_ID');
+  let folder;
+  if(folderId){try{folder=DriveApp.getFolderById(folderId)}catch(e){folder=null}}
+  if(!folder){
+    folder=DriveApp.createFolder('مركز غيم - تقارير PDF');
+    const settings=sheet_(SHEETS.SETTINGS);
+    const rows=settings.getDataRange().getValues();
+    let found=false;
+    for(let i=1;i<rows.length;i++)if(rows[i][0]==='PDF_FOLDER_ID'){settings.getRange(i+1,2).setValue(folder.getId());found=true;break}
+    if(!found)settings.appendRow(['PDF_FOLDER_ID',folder.getId()]);
+  }
+  const safeName=String(fileName||'report.pdf').replace(/[\\/:*?"<>|#%{}~&]/g,'_').slice(0,100);
+  const blob=Utilities.newBlob(bytes,'application/pdf',date+'_'+String(user.name||'employee').replace(/[^\w\u0600-\u06FF-]/g,'_')+'_'+safeName);
+  const file=folder.createFile(blob);
+  return file.getUrl();
 }
 function listReports_(u){
   const sh=sheet_(SHEETS.REPORTS),rows=sh.getDataRange().getValues();if(rows.length<2)return [];
