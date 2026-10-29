@@ -1,4 +1,4 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102b25"><title>شاشة إيرادات مركز غيم</title><link rel="stylesheet" href="style.css?v=mobile-display-20261029"><style>
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102b25"><title>شاشة إيرادات مركز غيم</title><link rel="stylesheet" href="style.css?v=center-total-20261029"><style>
 :root{color-scheme:dark;--night:#071f1a;--panel:#10382d;--panel2:#164638;--stroke:rgba(180,224,201,.16);--muted:#a6c4b5;--gold:#efd28d;--white:#f7fbf8}
 *{box-sizing:border-box}
 html{min-height:100%;background:var(--night);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
@@ -10,12 +10,12 @@ body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 85% -10%,rg
 .display-brand h1{font-size:clamp(23px,3.2vw,39px);font-weight:800;letter-spacing:-.5px;margin:0;line-height:1.35}
 .display-brand p{color:var(--muted);font-size:clamp(11px,1.4vw,14px);margin:3px 0 0}
 .display-time{text-align:left;color:#d1e2d8;font-size:12px;background:rgba(255,255,255,.045);border:1px solid var(--stroke);border-radius:13px;padding:9px 13px;white-space:nowrap}
-.display-total{position:relative;isolation:isolate;overflow:hidden;margin:0 0 20px;padding:clamp(24px,5vw,54px);border:1px solid rgba(231,202,130,.25);background:radial-gradient(ellipse at 0% 100%,rgba(226,190,107,.10),transparent 44%),linear-gradient(135deg,#174b3b,#10382d 65%,#0d3027);border-radius:clamp(22px,3vw,32px);box-shadow:0 22px 55px rgba(0,0,0,.14)}
+.display-total{position:relative;isolation:isolate;overflow:hidden;text-align:center;margin:0 0 20px;padding:clamp(24px,5vw,54px);border:1px solid rgba(231,202,130,.25);background:radial-gradient(ellipse at 0% 100%,rgba(226,190,107,.10),transparent 44%),linear-gradient(135deg,#174b3b,#10382d 65%,#0d3027);border-radius:clamp(22px,3vw,32px);box-shadow:0 22px 55px rgba(0,0,0,.14)}
 .display-total:after{content:'غ';position:absolute;z-index:-1;left:1%;bottom:-42%;font-size:clamp(160px,25vw,310px);font-weight:900;line-height:1;color:rgba(255,255,255,.025);pointer-events:none}
 .display-total>span{display:block;color:#c5dcd0;font-size:clamp(12px,1.5vw,16px);font-weight:600}
 .display-total strong{display:block;overflow-wrap:anywhere;font-size:clamp(37px,7vw,80px);line-height:1.25;letter-spacing:-1px;color:var(--gold);font-weight:800;margin:12px 0 0;font-variant-numeric:tabular-nums}
-.display-total .total-words{display:block;width:fit-content;max-width:100%;margin-top:19px;padding:11px 17px;border:1px solid rgba(239,210,141,.24);border-radius:14px;background:rgba(239,210,141,.10);color:#f7e5b6;font-weight:700;font-size:clamp(13px,1.7vw,19px);line-height:1.9}
-#period{display:block;margin-top:17px;color:#a9c8b8;font-size:11px}
+.display-total .total-words{display:block;width:fit-content;max-width:100%;margin:19px auto 0;padding:11px 17px;border:1px solid rgba(239,210,141,.24);border-radius:14px;background:rgba(239,210,141,.10);color:#f7e5b6;font-weight:700;font-size:clamp(13px,1.7vw,19px);line-height:1.9}
+#period{display:block;text-align:center;margin-top:17px;color:#a9c8b8;font-size:11px}
 .display-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .display-card{position:relative;min-width:0;overflow:hidden;background:linear-gradient(145deg,rgba(22,70,55,.94),rgba(13,49,39,.96));border:1px solid var(--stroke);border-radius:20px;padding:clamp(17px,2.3vw,25px);box-shadow:0 10px 25px rgba(0,0,0,.07);transition:transform .2s,border-color .2s}
 .display-card:before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,#efd28d,#4b9f7b);opacity:.9}
