@@ -1,7 +1,7 @@
 /* Ghaym Center Revenue System
    Configure API_URL after deploying Code.gs as a Google Apps Script web app.
 */
-const API_URL = ""; // Paste the deployed Apps Script Web App URL here.
+const API_URL = "https://script.google.com/macros/s/AKfycbyQbd5XVHAffBcnXW3WbIUdLAzwTjm45evzRxMqsUDVjp5U3NMXEr6DsqWTbglPXdkzaA/exec";
 const $ = (id) => document.getElementById(id);
 const state = { user:null, token:null, reports:[], employees:[], view:null };
 const money = n => (Number(n)||0).toLocaleString('ar-SA',{maximumFractionDigits:2})+' ر.س';
