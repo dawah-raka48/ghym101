@@ -5,6 +5,40 @@ const API_URL = "https://script.google.com/macros/s/AKfycbyQbd5XVHAffBcnXW3WbIUd
 const $ = (id) => document.getElementById(id);
 const state = { user:null, token:null, reports:[], employees:[], view:null };
 const money = n => (Number(n)||0).toLocaleString('ar-SA',{maximumFractionDigits:2})+' ر.س';
+
+function amountInArabicWords(value){
+  let n=Math.round((Number(value)||0)*100)/100;
+  if(n<0)return 'سالب '+amountInArabicWords(-n);
+  const ones=['','واحد','اثنان','ثلاثة','أربعة','خمسة','ستة','سبعة','ثمانية','تسعة'];
+  const teens=['عشرة','أحد عشر','اثنا عشر','ثلاثة عشر','أربعة عشر','خمسة عشر','ستة عشر','سبعة عشر','ثمانية عشر','تسعة عشر'];
+  const tens=['','','عشرون','ثلاثون','أربعون','خمسون','ستون','سبعون','ثمانون','تسعون'];
+  const hundreds=['','مائة','مائتان','ثلاثمائة','أربعمائة','خمسمائة','ستمائة','سبعمائة','ثمانمائة','تسعمائة'];
+  function under1000(x){
+    const parts=[];const h=Math.floor(x/100),r=x%100;
+    if(h)parts.push(hundreds[h]);
+    if(r>=10&&r<20)parts.push(teens[r-10]);
+    else {const u=r%10,t=Math.floor(r/10);if(u&&t)parts.push(ones[u]+' و'+tens[t]);else if(u)parts.push(ones[u]);else if(t)parts.push(tens[t]);}
+    return parts.join(' و');
+  }
+  function group(x,one,two,plural){
+    if(x===0)return '';
+    if(x===1)return one;
+    if(x===2)return two;
+    if(x>=3&&x<=10)return under1000(x)+' '+plural;
+    return under1000(x)+' '+one;
+  }
+  const whole=Math.floor(n), halalas=Math.round((n-whole)*100);
+  if(whole===0 && halalas===0)return 'صفر ريال سعودي فقط لا غير';
+  const scales=[{v:1e9,one:'مليار',two:'ملياران',plural:'مليارات'},{v:1e6,one:'مليون',two:'مليونان',plural:'ملايين'},{v:1e3,one:'ألف',two:'ألفان',plural:'آلاف'}];
+  let rest=whole;const parts=[];
+  for(const s of scales){const q=Math.floor(rest/s.v);rest%=s.v;if(q)parts.push(group(q,s.one,s.two,s.plural));}
+  if(rest)parts.push(under1000(rest));
+  let words=parts.join(' و');
+  words += (whole===1?' ريال سعودي':whole===2?' ريالان سعوديان':' ريال سعودي');
+  if(halalas)words+=' و'+under1000(halalas)+(halalas===1?' هللة':halalas===2?' هللتان':' هللة') ;
+  return words+' فقط لا غير';
+}
+
 const dateText = d => d ? new Date(d).toLocaleDateString('ar-SA') : '—';
 const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const todayISO = () => {const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
@@ -26,7 +60,7 @@ $('logoutBtn').addEventListener('click',async()=>{try{await api('logout')}catch{
 $('refreshBtn').addEventListener('click',loadReports);
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>openView(b.dataset.view)));
 $('backBtn').addEventListener('click',()=>{$('contentPanel').classList.add('hidden');$('recentPanel').classList.toggle('hidden',state.user.role!=='admin')});
-async function loadReports(){try{const d=await api('listReports');state.reports=d.reports||[];renderRecent();if(state.user.role==='admin'){const all=state.reports;$('statRevenue').textContent=money(all.reduce((s,r)=>s+Number(r.total||0),0));$('statInvoices').textContent=all.reduce((s,r)=>s+Number(r.students||0),0).toLocaleString('ar-SA');$('statToday').textContent=all.filter(r=>r.date===todayISO()).length.toLocaleString('ar-SA');}}catch(e){if(state.user.role==='admin')$('recentReports').innerHTML='<p class="muted">'+esc(e.message)+'</p>';}}
+async function loadReports(){try{const d=await api('listReports');state.reports=d.reports||[];renderRecent();if(state.user.role==='admin'){const all=state.reports;const revenueTotal=all.reduce((s,r)=>s+Number(r.total||0),0);$('statRevenue').textContent=money(revenueTotal);const wordsEl=$('statRevenueWords');if(wordsEl)wordsEl.textContent=amountInArabicWords(revenueTotal);$('statInvoices').textContent=all.reduce((s,r)=>s+Number(r.students||0),0).toLocaleString('ar-SA');$('statToday').textContent=all.filter(r=>r.date===todayISO()).length.toLocaleString('ar-SA');}}catch(e){if(state.user.role==='admin')$('recentReports').innerHTML='<p class="muted">'+esc(e.message)+'</p>';}}
 function renderRecent(){const rows=state.reports.slice(0,8);$('recentReports').innerHTML=rows.length?tableHTML(rows,false):'<div class="empty">لا توجد تقارير مسجلة حتى الآن.</div>'}
 function tableHTML(rows,manage){return '<table><thead><tr><th>التاريخ</th>'+(manage?'<th>الموظف</th>':'')+'<th>عدد الطلاب</th><th>الإجمالي</th><th>الشبكة</th><th>تحويل</th><th>قرة</th><th>نقدًا</th><th>ملف PDF</th>'+(manage?'<th>إجراء</th>':'')+'</tr></thead><tbody>'+rows.map(r=>'<tr><td>'+esc(dateText(r.date))+'</td>'+(manage?'<td>'+esc(r.employeeName||'—')+'</td>':'')+'<td>'+esc(r.students)+'</td><td><b>'+esc(money(r.total))+'</b></td><td>'+esc(money(r.network))+'</td><td>'+esc(money(r.transfer))+'</td><td>'+esc(money(r.qara))+'</td><td>'+esc(money(r.cash))+'</td><td>'+(r.pdfUrl?'<a class="pill" href="'+esc(r.pdfUrl)+'" target="_blank" rel="noopener">فتح PDF</a>':'—')+'</td>'+(manage?'<td><button class="btn ghost" data-delete="'+esc(r.id)+'">حذف</button></td>':'')+'</tr>').join('')+'</tbody></table>'}
 async function openView(view){state.view=view;$('contentPanel').classList.remove('hidden');$('recentPanel').classList.add('hidden');$('contentTitle').textContent=({entry:'إدخال إيراد',reports:'التقارير والإيرادات',myreports:'تقاريري',employees:'إدارة الموظفين'})[view]||view;const body=$('contentBody');body.innerHTML='<p class="muted">جارٍ التحميل…</p>';if(view==='entry')renderEntry();else if(view==='reports'||view==='myreports'){await loadReports();body.innerHTML='<div class="filter-row"><input id="reportSearch" placeholder="بحث بالتاريخ أو الموظف"><button id="printReports" class="btn ghost">طباعة التقرير</button></div><div id="reportsTable" class="table-wrap"></div>';renderReportTable(view==='reports');$('reportSearch').addEventListener('input',()=>renderReportTable(view==='reports'));$('printReports').onclick=()=>window.print();}else if(view==='employees')await renderEmployees();}
