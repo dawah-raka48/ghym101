@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#123c32"><title>تحويلات رسوم الطلاب | مركز غيم</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-shell">
+<header class="topbar"><a class="brand" href="./"><span class="brand-mark">غ</span><span><b>مركز غيم</b><small>تحويلات رسوم الطلاب</small></span></a><div class="top-actions"><span id="today"></span><button id="logoutBtn" class="btn ghost hidden">تسجيل الخروج</button></div></header>
+<main>
+<section id="configNotice" class="notice hidden">لم يتم ربط الخادم بعد. اتبع تعليمات README.md لإعداد Google Apps Script ثم ضع رابط /exec في app.js.</section>
+<section id="loginView" class="login-layout">
+<div class="welcome"><span class="eyebrow">GHAYM CENTER · FINANCE</span><h1>تحويلات الطلاب،<br>بمسار مراجعة واضح.</h1><p>تسجيل التحويلات، مراجعة الإيصالات، وتوثيق الفواتير في مكان واحد.</p><div class="welcome-tags"><span>صلاحيات منفصلة</span><span>سجل تدقيق</span><span>متوافق مع الجوال</span></div></div>
+<form id="loginForm" class="panel login-card"><div class="panel-icon">↗</div><h2>تسجيل الدخول</h2><p class="muted">أدخل رمز الدخول المخصص لك</p><label for="accessCode">رمز الدخول</label><input id="accessCode" inputmode="numeric" autocomplete="one-time-code" required placeholder="أدخل رمزك" type="password"><button class="btn primary full" type="submit">دخول إلى النظام <span>←</span></button><p id="loginError" class="error" role="alert"></p><p class="tiny muted">لا تشارك رمزك مع أي شخص آخر.</p></form>
+</section>
+<section id="dashboardView" class="hidden">
+<div class="page-heading"><div><span class="eyebrow">لوحة التحكم</span><h1 id="welcomeTitle">أهلًا بك</h1><p class="muted" id="welcomeSub">متابعة تحويلات رسوم الطلاب</p></div><span id="roleBadge" class="role-badge">موظف</span></div>
+<div id="statsGrid" class="stats-grid"></div>
+<div id="actionGrid" class="action-grid"></div>
+<section id="contentPanel" class="panel content-panel hidden"><div class="section-heading"><div><span class="eyebrow">مركز غيم</span><h2 id="contentTitle">التحويلات</h2></div><button id="backBtn" class="btn ghost">العودة</button></div><div id="contentBody"></div></section>
+<section id="recentPanel" class="panel content-panel"><div class="section-heading"><div><h2>أحدث التحويلات</h2><p class="muted">آخر العمليات المسجلة حسب صلاحيتك</p></div><button id="refreshBtn" class="btn ghost">تحديث ↻</button></div><div id="recentTransfers" class="table-wrap"><p class="muted">سجّل الدخول لتحميل البيانات.</p></div></section>
+</section>
+</main><footer><span>مركز غيم © <span id="year"></span></span><span>نظام تحويلات رسوم الطلاب</span></footer>
+</div><div id="toast" class="toast" role="status"></div>
+<script src="app.js"></script>
+</body></html>
