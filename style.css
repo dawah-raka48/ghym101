@@ -12,7 +12,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .brand{display:flex;align-items:center;gap:12px}.brand-mark{display:grid;place-items:center;width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#16775b,#07392e);color:#f4d58b;font-size:26px;font-weight:800;box-shadow:0 6px 16px rgba(7,57,46,.17)}.brand b,.brand small{display:block}.brand b{font-size:17px;font-weight:800;letter-spacing:-.3px}.brand small{font-size:11px;color:var(--muted)}
 .top-actions{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:12px}
 main{max-width:1220px;margin:0 auto;padding:34px 22px 60px;min-height:calc(100vh - 140px)}
-.login-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:stretch;max-width:1050px;margin:42px auto 62px}
+.login-layout{display:grid;grid-template-columns:minmax(0,460px);justify-content:center;align-items:center;max-width:100%;margin:70px auto 90px}
 .welcome{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:clamp(28px,5vw,58px);border-radius:28px;background:radial-gradient(circle at 12% 85%,rgba(32,144,105,.35),transparent 34%),linear-gradient(145deg,#0a4436,#062820 75%);color:#fff;min-height:430px;box-shadow:0 22px 55px rgba(6,40,32,.18)}
 .welcome:before{content:'غ';position:absolute;z-index:-1;left:-24px;bottom:-112px;font-size:310px;font-weight:800;line-height:1;color:rgba(255,255,255,.035);transform:rotate(-8deg)}
 .welcome:after{content:'';position:absolute;z-index:-1;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
